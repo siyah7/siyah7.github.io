@@ -1,0 +1,657 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/123.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Flipping Cookie 题解一、题目分析题目使用了 AES 的 CBC 加密模式，提供了两个核心接口： 1234567891011121314151617181920212223242526# 检查 cookie@chal.route(&#x27;&#x2F;flipping_cookie&#x2F;check_admin&#x2F;&lt;cookie&gt;&#x2F;&lt;iv&gt;&#x2F;&#x27;)def check_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flipping Cookie 题解">
+<meta property="og:url" content="https://siyah7.github.io/2025/04/20/Flipping%20Cookie%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="siyah">
+<meta property="og:description" content="Flipping Cookie 题解一、题目分析题目使用了 AES 的 CBC 加密模式，提供了两个核心接口： 1234567891011121314151617181920212223242526# 检查 cookie@chal.route(&#x27;&#x2F;flipping_cookie&#x2F;check_admin&#x2F;&lt;cookie&gt;&#x2F;&lt;iv&gt;&#x2F;&#x27;)def check_">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-04-20T13:51:12.000Z">
+<meta property="article:modified_time" content="2025-04-20T13:54:24.242Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Flipping Cookie 题解 - siyah</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"siyah7.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>siyah</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default2.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Flipping Cookie 题解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-20 21:51" pubdate>
+          April 20, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          650 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Flipping Cookie 题解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Flipping-Cookie-题解"><a href="#Flipping-Cookie-题解" class="headerlink" title="Flipping Cookie 题解"></a>Flipping Cookie 题解</h1><h2 id="一、题目分析"><a href="#一、题目分析" class="headerlink" title="一、题目分析"></a>一、题目分析</h2><p>题目使用了 AES 的 CBC 加密模式，提供了两个核心接口：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 检查 cookie</span><br><span class="hljs-meta">@chal.route(<span class="hljs-params"><span class="hljs-string">&#x27;/flipping_cookie/check_admin/&lt;cookie&gt;/&lt;iv&gt;/&#x27;</span></span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_admin</span>(<span class="hljs-params">cookie, iv</span>):<br>    cookie = <span class="hljs-built_in">bytes</span>.fromhex(cookie)<br>    iv = <span class="hljs-built_in">bytes</span>.fromhex(iv)<br>    cipher = AES.new(KEY, AES.MODE_CBC, iv)<br>    decrypted = cipher.decrypt(cookie)<br>    unpadded = unpad(decrypted, <span class="hljs-number">16</span>)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">b&quot;admin=True&quot;</span> <span class="hljs-keyword">in</span> unpadded.split(<span class="hljs-string">b&quot;;&quot;</span>):<br>        <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&quot;flag&quot;</span>: FLAG&#125;<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&quot;error&quot;</span>: <span class="hljs-string">&quot;Only admin can read the flag&quot;</span>&#125;<br><br><span class="hljs-comment"># 获取 cookie</span><br><span class="hljs-meta">@chal.route(<span class="hljs-params"><span class="hljs-string">&#x27;/flipping_cookie/get_cookie/&#x27;</span></span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_cookie</span>():<br>    expires_at = (datetime.today() + timedelta(days=<span class="hljs-number">1</span>)).strftime(<span class="hljs-string">&quot;%s&quot;</span>)<br>    cookie = <span class="hljs-string">f&quot;admin=False;expiry=<span class="hljs-subst">&#123;expires_at&#125;</span>&quot;</span>.encode()<br><br>    iv = os.urandom(<span class="hljs-number">16</span>)<br>    padded = pad(cookie, <span class="hljs-number">16</span>)<br>    cipher = AES.new(KEY, AES.MODE_CBC, iv)<br>    encrypted = cipher.encrypt(padded)<br><br>    <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&quot;cookie&quot;</span>: iv.<span class="hljs-built_in">hex</span>() + encrypted.<span class="hljs-built_in">hex</span>()&#125;<br></code></pre></td></tr></table></figure>
+
+<p>加密方式：<code>AES-CBC</code><br>块大小：<code>16 字节</code><br>明文格式：<code>b&quot;admin=False;expiry=...&quot;</code>，结构如下：</p>
+<ul>
+<li>第一块（Block 0）：<code>admin=False;</code></li>
+<li>第二块（Block 1）：<code>expiry=xxx</code></li>
+</ul>
+<p>判断管理员的条件：解密后的明文中包含 <code>b&quot;admin=True&quot;</code> 子字符串。</p>
+<h2 id="二、比特翻转攻击原理"><a href="#二、比特翻转攻击原理" class="headerlink" title="二、比特翻转攻击原理"></a>二、比特翻转攻击原理</h2><h3 id="1-CBC模式解密过程"><a href="#1-CBC模式解密过程" class="headerlink" title="1. CBC模式解密过程"></a>1. CBC模式解密过程</h3><p>在CBC模式中，解密公式为：</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">Plaintext_block[<span class="hljs-built_in">n</span>] = Decrypt(Ciphertext_block[<span class="hljs-built_in">n</span>]) <span class="hljs-built_in">XOR</span> Previous_Ciphertext_block<br></code></pre></td></tr></table></figure>
+<ul>
+<li>对于第一个块，<code>Previous_Ciphertext_block</code>就是IV</li>
+<li>因此修改IV会直接影响第一个明文块的解密结果</li>
+</ul>
+<h3 id="2-比特翻转的核心思想"><a href="#2-比特翻转的核心思想" class="headerlink" title="2. 比特翻转的核心思想"></a>2. 比特翻转的核心思想</h3><p>若想将明文中的某个字节<code>X</code>改为<code>Y</code>，只需对IV中对应位置的字节执行：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">New_IV_byte = <span class="hljs-keyword">Original_IV_byte </span><span class="hljs-keyword">XOR </span>X <span class="hljs-keyword">XOR </span>Y<br></code></pre></td></tr></table></figure>
+<p>解密时：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">New_Plain_byte = Decrypt(Ciphertext_byte) <span class="hljs-keyword">XOR </span>New_IV_byte<br>              = (<span class="hljs-keyword">Original_Plain_byte </span><span class="hljs-keyword">XOR </span><span class="hljs-keyword">Original_IV_byte) </span><span class="hljs-keyword">XOR </span>(<span class="hljs-keyword">Original_IV_byte </span><span class="hljs-keyword">XOR </span>X <span class="hljs-keyword">XOR </span>Y)<br>              = <span class="hljs-keyword">Original_Plain_byte </span><span class="hljs-keyword">XOR </span>X <span class="hljs-keyword">XOR </span>Y<br>              = Y  <span class="hljs-comment"># 当Original_Plain_byte == X时</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="三、攻击流程"><a href="#三、攻击流程" class="headerlink" title="三、攻击流程"></a>三、攻击流程</h2><p>原始cookie明文格式：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">admin</span>=<span class="hljs-literal">False</span><span class="hljs-comment">;expiry=1682018400</span><br></code></pre></td></tr></table></figure>
+
+<p>被AES CBC加密后分成多个16字节块：</p>
+<ul>
+<li><code>Block 0</code>（前16字节）: <code>admin=False;expi</code></li>
+<li><code>Block 1</code>: 后续内容</li>
+</ul>
+<p>目标是将<code>admin=False</code>改为<code>admin=True</code>。</p>
+<h3 id="1-计算XOR差分"><a href="#1-计算XOR差分" class="headerlink" title="1. 计算XOR差分"></a>1. 计算XOR差分</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">original_plain = <span class="hljs-string">b&quot;admin=False;&quot;</span><br>target_plain   = <span class="hljs-string">b&quot;admin=True;&quot;</span><br>diff = <span class="hljs-built_in">bytes</span>([a ^ b <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(original_plain, target_plain)])<br></code></pre></td></tr></table></figure>
+<p>结果示例：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-symbol">original:</span> a d m i n <span class="hljs-operator">=</span> F a l s e <span class="hljs-comment">;</span><br><span class="hljs-symbol">target:</span>   a d m i n <span class="hljs-operator">=</span> T r u e <span class="hljs-comment">;</span><br>差分:    \<span class="hljs-keyword">x</span><span class="hljs-number">00</span>\<span class="hljs-keyword">x</span><span class="hljs-number">00</span>\<span class="hljs-keyword">x</span><span class="hljs-number">00</span>\<span class="hljs-keyword">x</span><span class="hljs-number">00</span>\<span class="hljs-keyword">x</span><span class="hljs-number">00</span>\<span class="hljs-keyword">x</span><span class="hljs-number">12</span>\<span class="hljs-keyword">x</span><span class="hljs-number">13</span>\<span class="hljs-keyword">x</span><span class="hljs-number">19</span>\<span class="hljs-keyword">x</span><span class="hljs-number">16</span>\<span class="hljs-keyword">x</span><span class="hljs-number">1</span>e\<span class="hljs-keyword">x</span><span class="hljs-number">00</span><br></code></pre></td></tr></table></figure>
+<p>其中<code>\x12</code>是<code>F(0x46) XOR T(0x54)</code>的结果</p>
+<h3 id="2-获取原始Cookie"><a href="#2-获取原始Cookie" class="headerlink" title="2. 获取原始Cookie"></a>2. 获取原始Cookie</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">resp = requests.get(<span class="hljs-string">&quot;http://aes.cryptohack.org/flipping_cookie/get_cookie/&quot;</span>).json()<br>full_cookie = <span class="hljs-built_in">bytes</span>.fromhex(resp[<span class="hljs-string">&quot;cookie&quot;</span>])<br>iv = full_cookie[:<span class="hljs-number">16</span>]<br>ciphertext = full_cookie[<span class="hljs-number">16</span>:]<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-伪造IV"><a href="#3-伪造IV" class="headerlink" title="3. 伪造IV"></a>3. 伪造IV</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">forged_iv = <span class="hljs-built_in">bytes</span>([a ^ b <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(iv, diff)]) + iv[<span class="hljs-built_in">len</span>(diff):]<br></code></pre></td></tr></table></figure>
+<p>操作说明：</p>
+<ul>
+<li>将IV的前<code>len(diff)</code>字节与<code>diff</code>逐字节XOR</li>
+<li>保留IV的剩余部分不变</li>
+</ul>
+<h3 id="4-提交攻击"><a href="#4-提交攻击" class="headerlink" title="4. 提交攻击"></a>4. 提交攻击</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">check_url = <span class="hljs-string">f&quot;http://aes.cryptohack.org/flipping_cookie/check_admin/<span class="hljs-subst">&#123;ciphertext.<span class="hljs-built_in">hex</span>()&#125;</span>/<span class="hljs-subst">&#123;forged_iv.<span class="hljs-built_in">hex</span>()&#125;</span>/&quot;</span><br>flag = requests.get(check_url).json()<br></code></pre></td></tr></table></figure>
+
+<h2 id="四、完整攻击脚本"><a href="#四、完整攻击脚本" class="headerlink" title="四、完整攻击脚本"></a>四、完整攻击脚本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> json<br><br><span class="hljs-comment"># 计算需要修改的字节差异</span><br>original_plain = <span class="hljs-string">b&quot;admin=False;&quot;</span><br>target_plain   = <span class="hljs-string">b&quot;admin=True;&quot;</span><br>diff = <span class="hljs-built_in">bytes</span>([a ^ b <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(original_plain, target_plain)])<br><br><span class="hljs-comment"># 获取原始cookie</span><br>resp = requests.get(<span class="hljs-string">&quot;http://aes.cryptohack.org/flipping_cookie/get_cookie/&quot;</span>).json()<br>full_cookie = <span class="hljs-built_in">bytes</span>.fromhex(resp[<span class="hljs-string">&quot;cookie&quot;</span>])<br>iv = full_cookie[:<span class="hljs-number">16</span>]<br>ciphertext = full_cookie[<span class="hljs-number">16</span>:]<br><br><span class="hljs-comment"># 构造伪造的IV</span><br>forged_iv = <span class="hljs-built_in">bytes</span>([a ^ b <span class="hljs-keyword">for</span> a, b <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(iv, diff)]) + iv[<span class="hljs-built_in">len</span>(diff):]<br><br><span class="hljs-comment"># 提交攻击请求</span><br>check_url = <span class="hljs-string">f&quot;http://aes.cryptohack.org/flipping_cookie/check_admin/<span class="hljs-subst">&#123;ciphertext.<span class="hljs-built_in">hex</span>()&#125;</span>/<span class="hljs-subst">&#123;forged_iv.<span class="hljs-built_in">hex</span>()&#125;</span>/&quot;</span><br>flag = requests.get(check_url).json()<br><span class="hljs-built_in">print</span>(flag)<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Flipping Cookie 题解</div>
+      <div>https://siyah7.github.io/2025/04/20/Flipping Cookie 题解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 20, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/19/Hexo%20%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2/" title="Hexo 搭建与部署博客">
+                        <span class="hidden-mobile">Hexo 搭建与部署博客</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
