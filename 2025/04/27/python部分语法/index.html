@@ -27,7 +27,7 @@
 <meta property="og:description" content="enumerate() 函数 enumerate() 是 Python 内置的高效迭代函数，用于为可迭代对象添加计数器，形成索引-元素对。 一、 基本语法 1enumerate(iterable, start&#x3D;0)  iterable：任何可迭代对象（列表、字符串、元组等） start：计数器起始值（默认为0）  二、 典型用法示例 示例1：基本列表遍历 12345678fruits &#x3D; [&amp;#x">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-04-27T14:26:21.000Z">
-<meta property="article:modified_time" content="2025-05-09T14:27:58.256Z">
+<meta property="article:modified_time" content="2025-05-09T14:35:17.652Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k words
+          862 words
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          12 mins
+          8 mins
         
       </span>
     
@@ -469,84 +469,6 @@
 </li>
 </ul>
 <hr>
-<p>计算 <strong>欧拉函数 (\phi(N))</strong>（即小于等于 (N) 且与 (N) 互质的正整数的个数）的方法取决于 (N) 的质因数分解。以下是详细的计算方法：</p>
-<hr>
-<h3 id="1-欧拉函数的定义"><strong>1. 欧拉函数的定义</strong></h3>
-<p>[<br>
-\phi(N) = \text{小于等于 } N \text{ 且与 } N \text{ 互质的正整数的个数}<br>
-]</p>
-<hr>
-<h3 id="2-计算方法"><strong>2. 计算方法</strong></h3>
-<h4 id="1-如果-N-是质数"><strong>(1) 如果 (N) 是质数</strong></h4>
-<ul>
-<li>若 (N) 是质数，则所有小于 (N) 的数都与它互质：<br>
-[<br>
-\phi(N) = N - 1<br>
-]<br>
-<strong>示例</strong>：<br>
-[<br>
-\phi(7) = 6 \quad (\text{因为 } 1,2,3,4,5,6 \text{ 都与 7 互质})<br>
-]</li>
-</ul>
-<h4 id="2-如果-N-p-k-（-p-是质数，-k-geq-1-）"><strong>(2) 如果 (N = p^k)（(p) 是质数，(k \geq 1)）</strong></h4>
-<ul>
-<li>只有 (p) 的倍数不与 (N) 互质，而 (p) 的倍数有 (p^{k-1}) 个：<br>
-[<br>
-\phi(p^k) = p^k - p^{k-1} = p^k \left(1 - \frac{1}{p}\right)<br>
-]<br>
-<strong>示例</strong>：<br>
-[<br>
-\phi(8) = \phi(2^3) = 8 - 4 = 4 \quad (\text{互质数：1,3,5,7})<br>
-]</li>
-</ul>
-<h4 id="3-如果-N-是两个互质数的乘积（-N-a-times-b-，且-gcd-a-b-1-）"><strong>(3) 如果 (N) 是两个互质数的乘积（(N = a \times b)，且 (\gcd(a,b)=1)）</strong></h4>
-<ul>
-<li>欧拉函数是积性的：<br>
-[<br>
-\phi(N) = \phi(a) \times \phi(b)<br>
-]<br>
-<strong>示例</strong>：<br>
-[<br>
-\phi(15) = \phi(3) \times \phi(5) = 2 \times 4 = 8 \quad (\text{互质数：1,2,4,7,8,11,13,14})<br>
-]</li>
-</ul>
-<h4 id="4-一般情况（任意-N-的质因数分解）"><strong>(4) 一般情况（任意 (N) 的质因数分解）</strong></h4>
-<ul>
-<li>对 (N) 进行质因数分解：<br>
-[<br>
-N = p_1^{k_1} \times p_2^{k_2} \times \cdots \times p_m^{k_m}<br>
-]<br>
-则：<br>
-[<br>
-\phi(N) = N \times \left(1 - \frac{1}{p_1}\right) \times \left(1 - \frac{1}{p_2}\right) \times \cdots \times \left(1 - \frac{1}{p_m}\right)<br>
-]<br>
-<strong>示例</strong>：<br>
-[<br>
-\phi(100) = 100 \times \left(1 - \frac{1}{2}\right) \times \left(1 - \frac{1}{5}\right) = 100 \times \frac{1}{2} \times \frac{4}{5} = 40<br>
-]</li>
-</ul>
-<hr>
-<h3 id="3-Python-实现"><strong>3. Python 实现</strong></h3>
-<h4 id="1-使用-sympy-库（推荐）"><strong>(1) 使用 <code>sympy</code> 库（推荐）</strong></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> sympy <span class="hljs-keyword">import</span> totient<br><br><span class="hljs-built_in">print</span>(totient(<span class="hljs-number">100</span>))  <span class="hljs-comment"># 输出 40</span><br></code></pre></td></tr></table></figure>
-<h4 id="2-手动实现"><strong>(2) 手动实现</strong></h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> math<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">phi</span>(<span class="hljs-params">n</span>):<br>    result = n<br>    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">int</span>(math.sqrt(n)) + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">if</span> n % p == <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">while</span> n % p == <span class="hljs-number">0</span>:<br>                n //= p<br>            result -= result // p<br>    <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">1</span>:<br>        result -= result // n<br>    <span class="hljs-keyword">return</span> result<br><br><span class="hljs-built_in">print</span>(phi(<span class="hljs-number">100</span>))  <span class="hljs-comment"># 输出 40</span><br></code></pre></td></tr></table></figure>
-<hr>
-<h3 id="4-常见问题"><strong>4. 常见问题</strong></h3>
-<ul>
-<li><strong>如果 (N = 1)？</strong><br>
-(\phi(1) = 1)（因为 1 与自身互质）。</li>
-<li><strong>如果 (N) 是合数？</strong><br>
-需先质因数分解，再用公式计算。</li>
-<li><strong>如何高效分解大数的质因数？</strong><br>
-对于非常大的 (N)（如 RSA 中的大数），质因数分解可能非常困难（这是 RSA 加密的基础）。</li>
-</ul>
-<hr>
-<h3 id="5-应用场景"><strong>5. 应用场景</strong></h3>
-<ul>
-<li><strong>RSA 加密</strong>：计算 (\phi(N)) 是密钥生成的关键步骤。</li>
-<li><strong>模运算</strong>：欧拉定理 (a^{\phi(N)} \equiv 1 \mod N)（当 (\gcd(a,N)=1) 时）。</li>
-</ul>
 
                 
               </div>
