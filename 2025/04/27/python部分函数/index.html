@@ -27,7 +27,7 @@
 <meta property="og:description" content="enumerate() 函数 enumerate() 是 Python 内置的高效迭代函数，用于为可迭代对象添加计数器，形成索引-元素对。 一、 基本语法 1enumerate(iterable, start&#x3D;0)  iterable：任何可迭代对象（列表、字符串、元组等） start：计数器起始值（默认为0）  二、 典型用法示例 示例1：基本列表遍历 12345678fruits &#x3D; [&amp;#x">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-04-27T14:26:21.000Z">
-<meta property="article:modified_time" content="2025-05-19T11:55:15.419Z">
+<meta property="article:modified_time" content="2025-05-27T12:49:27.359Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k words
+          4.4k words
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          32 mins
+          37 mins
         
       </span>
     
@@ -298,8 +298,7 @@
 <p><strong>传统方式</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">indices = []<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(elements)):<br>    <span class="hljs-keyword">if</span> elements[i] == <span class="hljs-number">1</span>:<br>        indices.append(i)<br></code></pre></td></tr></table></figure>
 <br>
-<h1><code>defaultdict()</code> 和 <code>tuple()</code>函数</h1>
-<h2 id="一、defaultdict-用法">一、<code>defaultdict</code> 用法</h2>
+<h1><code>defaultdict()</code></h1>
 <ol>
 <li>
 <p><strong>基本概念</strong><br>
@@ -346,7 +345,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">d_list = defaultdict(<span class="hljs-built_in">list</span>)    <span class="hljs-comment"># 默认值[]</span><br>d_set = defaultdict(<span class="hljs-built_in">set</span>)      <span class="hljs-comment"># 默认值set()</span><br>d_int = defaultdict(<span class="hljs-keyword">lambda</span>: <span class="hljs-number">100</span>)  <span class="hljs-comment"># 默认值100</span><br></code></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="二、tuple-用法">二、<code>tuple</code> 用法</h2>
+<h1><code>tuple()</code></h1>
 <ol>
 <li>
 <p><strong>基本特性</strong></p>
@@ -394,22 +393,45 @@
 <p><strong>创建方式</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">t1 = (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)        <span class="hljs-comment"># 标准创建</span><br>t2 = <span class="hljs-built_in">tuple</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])  <span class="hljs-comment"># 从列表转换</span><br>t3 = <span class="hljs-built_in">tuple</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>))   <span class="hljs-comment"># 从生成器创建</span><br></code></pre></td></tr></table></figure>
 </li>
-</ol>
-<h2 id="三、注意事项">三、注意事项</h2>
-<ol>
 <li>
+<p><strong>注意事项</strong></p>
+</li>
+</ol>
 <p><strong><code>defaultdict</code>陷阱</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">d = defaultdict(<span class="hljs-built_in">list</span>)<br>d[<span class="hljs-string">&quot;key&quot;</span>].append(<span class="hljs-number">1</span>)  <span class="hljs-comment"># 会自动创建&quot;key&quot;</span><br><span class="hljs-built_in">print</span>(d[<span class="hljs-string">&quot;nonexist&quot;</span>])  <span class="hljs-comment"># 输出[]但会创建该键</span><br></code></pre></td></tr></table></figure>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">d = defaultdict(<span class="hljs-built_in">list</span>)<br>d[<span class="hljs-string">&quot;key&quot;</span>].append(<span class="hljs-number">1</span>)  <span class="hljs-comment"># 会自动创建&quot;key&quot;</span><br><span class="hljs-built_in">print</span>(d[<span class="hljs-string">&quot;nonexist&quot;</span>])  <span class="hljs-comment"># 输出[]但会创建该键</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li>使用<code>in</code>检查前会隐式创建键</li>
 </ul>
-</li>
-<li>
 <p><strong><code>tuple</code>不可变性</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">t = (<span class="hljs-number">1</span>, [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>])  <span class="hljs-comment"># 包含可变元素的元组仍不可哈希！</span><br><span class="hljs-built_in">hash</span>(t)  <span class="hljs-comment"># 报错 TypeError</span><br></code></pre></td></tr></table></figure>
-</li>
-</ol>
+   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">t = (<span class="hljs-number">1</span>, [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>])  <span class="hljs-comment"># 包含可变元素的元组仍不可哈希！</span><br><span class="hljs-built_in">hash</span>(t)  <span class="hljs-comment"># 报错 TypeError</span><br></code></pre></td></tr></table></figure>
 <br>
+<h1><strong>namedtuple()</strong></h1>
+<p><code>namedtuple</code>是Python标准库<code>collections</code>模块中的一个工厂函数，用于创建具有命名字段的元组子类。它结合了元组的不可变性和类的可读性，非常适合用于表示简单的数据结构。</p>
+<h2 id="基本用法">基本用法</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> namedtuple<br><br><span class="hljs-comment"># 创建一个名为&#x27;Point&#x27;的namedtuple类，具有x和y两个字段</span><br>Point = namedtuple(<span class="hljs-string">&#x27;Point&#x27;</span>, [<span class="hljs-string">&#x27;x&#x27;</span>, <span class="hljs-string">&#x27;y&#x27;</span>])<br><br><span class="hljs-comment"># 实例化</span><br>p = Point(<span class="hljs-number">11</span>, y=<span class="hljs-number">22</span>)  <span class="hljs-comment"># 可以像普通类一样实例化</span><br><br><span class="hljs-comment"># 访问字段</span><br><span class="hljs-built_in">print</span>(p.x)  <span class="hljs-comment"># 输出: 11</span><br><span class="hljs-built_in">print</span>(p.y)  <span class="hljs-comment"># 输出: 22</span><br><span class="hljs-built_in">print</span>(p[<span class="hljs-number">0</span>])  <span class="hljs-comment"># 输出: 11 (仍然支持索引访问)</span><br></code></pre></td></tr></table></figure>
+<h2 id="主要特点">主要特点</h2>
+<ol>
+<li><strong>不可变性</strong>：和普通元组一样，一旦创建就不能修改</li>
+<li><strong>命名字段</strong>：可以通过属性名访问元素，提高代码可读性</li>
+<li><strong>内存高效</strong>：和普通元组占用相同的内存空间</li>
+<li><strong>支持所有元组操作</strong>：解包、索引访问等</li>
+</ol>
+<h2 id="创建namedtuple的其他方式">创建namedtuple的其他方式</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 使用空格分隔的字符串指定字段</span><br>Person = namedtuple(<span class="hljs-string">&#x27;Person&#x27;</span>, <span class="hljs-string">&#x27;name age gender&#x27;</span>)<br><br><span class="hljs-comment"># 使用逗号分隔的字符串</span><br>Person = namedtuple(<span class="hljs-string">&#x27;Person&#x27;</span>, <span class="hljs-string">&#x27;name, age, gender&#x27;</span>)<br><br><span class="hljs-comment"># 创建实例</span><br>bob = Person(name=<span class="hljs-string">&#x27;Bob&#x27;</span>, age=<span class="hljs-number">30</span>, gender=<span class="hljs-string">&#x27;male&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="常用方法和属性">常用方法和属性</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># _fields: 查看字段名</span><br><span class="hljs-built_in">print</span>(bob._fields)  <span class="hljs-comment"># 输出: (&#x27;name&#x27;, &#x27;age&#x27;, &#x27;gender&#x27;)</span><br><br><span class="hljs-comment"># _asdict(): 转换为OrderedDict</span><br><span class="hljs-built_in">print</span>(bob._asdict())  <span class="hljs-comment"># 输出: OrderedDict([(&#x27;name&#x27;, &#x27;Bob&#x27;), (&#x27;age&#x27;, 30), (&#x27;gender&#x27;, &#x27;male&#x27;)])</span><br><br><span class="hljs-comment"># _replace(): 创建新实例并替换某些字段</span><br>bob_updated = bob._replace(age=<span class="hljs-number">31</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="默认值和可选字段">默认值和可选字段</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 从Python 3.7开始，可以设置默认值</span><br>Person = namedtuple(<span class="hljs-string">&#x27;Person&#x27;</span>, <span class="hljs-string">&#x27;name age gender&#x27;</span>, defaults=[<span class="hljs-string">&#x27;unknown&#x27;</span>, <span class="hljs-string">&#x27;unknown&#x27;</span>])<br><br><span class="hljs-comment"># 如果不提供age和gender，将使用默认值</span><br>anon = Person(<span class="hljs-string">&#x27;Anonymous&#x27;</span>)<br><span class="hljs-built_in">print</span>(anon)  <span class="hljs-comment"># 输出: Person(name=&#x27;Anonymous&#x27;, age=&#x27;unknown&#x27;, gender=&#x27;unknown&#x27;)</span><br></code></pre></td></tr></table></figure>
+<h2 id="继承和扩展">继承和扩展</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 可以继承namedtuple类来添加方法</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span>(namedtuple(<span class="hljs-string">&#x27;Point&#x27;</span>, <span class="hljs-string">&#x27;x y&#x27;</span>)):<br>    __slots__ = ()  <span class="hljs-comment"># 保持内存高效</span><br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_to_origin</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> (<span class="hljs-variable language_">self</span>.x ** <span class="hljs-number">2</span> + <span class="hljs-variable language_">self</span>.y ** <span class="hljs-number">2</span>) ** <span class="hljs-number">0.5</span><br><br>p = Point(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(p.distance_to_origin())  <span class="hljs-comment"># 输出: 5.0</span><br></code></pre></td></tr></table></figure>
+<h2 id="使用场景">使用场景</h2>
+<ul>
+<li>替代简单的类，特别是只包含数据的类</li>
+<li>从数据库查询返回的记录</li>
+<li>CSV或数据库表的行</li>
+<li>坐标点、颜色等简单的数据结构</li>
+</ul>
+<p><code>namedtuple</code>提供了一种简洁高效的方式来创建简单的数据结构类，同时保持了元组的不可变性和内存效率。</p>
 <h1>pow()函数</h1>
 <ol>
 <li>
